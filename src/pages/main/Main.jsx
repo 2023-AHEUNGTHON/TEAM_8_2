@@ -1,15 +1,29 @@
 import React from "react";
 import * as S from "./style";
 import Logo from "../../assets/logo-shadow.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAtom } from "jotai";
+import { accessTokenAtom } from "../../store/jotaiAtoms";
 
 export default function Main() {
+  
+  const [ , setAccessToken] = useAtom(accessTokenAtom);
+  const router = useNavigate();
+  
+  const logout = () => {
+		if (confirm("정말 로그아웃 하시겠습니까?")) {
+			localStorage.removeItem("accessToken");
+			setAccessToken("");
+      router("/");
+		}
+  }
+
   return (
     <S.Root>
       <S.Body>
         <S.Header>
           <p>마음을 전하는 우체통</p>
-          <S.LogoImage src={Logo} alt="logo" />
+          <S.LogoImage src={Logo} alt="logo" onClick={() => logout()} />
           <p>마인드레터</p>
         </S.Header>
         <S.LetterBox>

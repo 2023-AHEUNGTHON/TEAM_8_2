@@ -14,6 +14,7 @@ import MyPostBox from "./pages/MyPostBox/MyPostBox";
 import MyPostBoxDetail from "./pages/MyPostBox/Detail/MyPostBoxDetail";
 import LetterDetail from "./pages/MyPostBox/Detail/LetterDetail/LetterDetail";
 import Deco from "./pages/Deco/Deco";
+import CompletePostBox from "./pages/CompletePostBox/CompletePostBox";
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -55,6 +56,7 @@ export default function Router() {
           {/* detail -> id routing */}
           <Route path="mypostbox/detail/:id" element={<LetterDetail />} />
 					<Route index path="/deco" element={<Deco />} />
+          <Route index path="/completepostbox" element={<CompletePostBox />} />
         </Route>
       </Routes>
     </BrowserRouter>
