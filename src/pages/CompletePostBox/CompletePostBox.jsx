@@ -197,6 +197,15 @@ export default function CompletePostBox() {
           color: userData.color,
           ornaments: userData.ornaments,
         });
+
+        const { uuid } = userData;
+
+        const shareableURL = `${window.location.href}/${uuid}`;
+
+        setUserName(userData.nickName);
+        setPost((prevPost) => ({ ...prevPost, sender: `${userData.nickName}(${uuid})` }));
+
+        navigate(`/mypostbox/${uuid}`);
   
       } catch (error) {
         console.error('Error fetching user data:', error);

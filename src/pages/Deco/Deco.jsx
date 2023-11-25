@@ -125,74 +125,141 @@ import shape6red from "../../assets/decoLib/shape6/red.png";
 import shape6skyblue from "../../assets/decoLib/shape6/sky-blue.png";
 import shape6white from "../../assets/decoLib/shape6/white.png";
 import shape6yellow from "../../assets/decoLib/shape6/yellow.png";
+import axios from "../../apis/axios";
 
 export default function Deco() {
-  const initialSelectedData ={
-    shape: 'shape1',
-    color: 'red',
-    ornaments: 'orna1'
-  }
+  const initialSelectedData = {
+    shape: "shape1",
+    color: "red",
+    ornaments: "orna1"
+  };
   const [selectedMenu, setSelectedMenu] = useState("shape"); // 스타일박스 메뉴 카테고리 선택
-  const [selectedItems, setSelectedItems] = useState(initialSelectedData);  // 우체통 스타일 폼
+  const [selectedItems, setSelectedItems] = useState(initialSelectedData); // 우체통 스타일 폼
   const [isStyleBoxVisible, setIsStyleBoxVisible] = useState(false); // 스타일박스 로딩 유무
-  
+
   const shapeList = [shape1, shape2, shape3, shape4, shape5, shape6];
   const colorList = [
-    { name: 'red', value: '#E20000' },
-    { name: 'pink', value: '#F88C81' },
-    { name: 'orange', value: '#F90' },
-    { name: 'yellow', value: '#FFD600' },
-    { name: 'beige', value: '#F7E2C2' },
-    { name: 'skyblue', value: '#A8D4CF' },
-    { name: 'lightblue', value: '#0093B3' },
-    { name: 'green', value: '#00A839' },
-    { name: 'deepgreen', value: '#005143' },
-    { name: 'purple', value: '#A337E6' },
-    { name: 'blue', value: '#2849F8' },
-    { name: 'deepblue', value: '#0F148B' },
-    { name: 'black', value: '#000' },
-    { name: 'grey', value: '#7E7E7E' },
-    { name: 'white', value: '#FFF'}
+    { name: "red", value: "#E20000" },
+    { name: "pink", value: "#F88C81" },
+    { name: "orange", value: "#F90" },
+    { name: "yellow", value: "#FFD600" },
+    { name: "beige", value: "#F7E2C2" },
+    { name: "skyblue", value: "#A8D4CF" },
+    { name: "lightblue", value: "#0093B3" },
+    { name: "green", value: "#00A839" },
+    { name: "deepgreen", value: "#005143" },
+    { name: "purple", value: "#A337E6" },
+    { name: "blue", value: "#2849F8" },
+    { name: "deepblue", value: "#0F148B" },
+    { name: "black", value: "#000" },
+    { name: "grey", value: "#7E7E7E" },
+    { name: "white", value: "#FFF" }
   ];
   const ornaList = [orna1, orna2, orna3, orna4, orna5, orna6];
 
   const shapeImages = {
     shape1: [
-      shape1red, shape1pink, shape1orange, shape1yellow, shape1beige, 
-      shape1skyblue, shape1lightblue, shape1green, shape1deepgreen, 
-      shape1purple, shape1blue, shape1deepblue,
-      shape1black, shape1grey, shape1white
+      shape1red,
+      shape1pink,
+      shape1orange,
+      shape1yellow,
+      shape1beige,
+      shape1skyblue,
+      shape1lightblue,
+      shape1green,
+      shape1deepgreen,
+      shape1purple,
+      shape1blue,
+      shape1deepblue,
+      shape1black,
+      shape1grey,
+      shape1white
     ],
     shape2: [
-      shape2red, shape2pink, shape2orange, shape2yellow, shape2beige, 
-      shape2skyblue, shape2lightblue, shape2green, shape2deepgreen, 
-      shape2purple, shape2blue, shape2deepblue,
-      shape2black, shape2grey, shape2white
+      shape2red,
+      shape2pink,
+      shape2orange,
+      shape2yellow,
+      shape2beige,
+      shape2skyblue,
+      shape2lightblue,
+      shape2green,
+      shape2deepgreen,
+      shape2purple,
+      shape2blue,
+      shape2deepblue,
+      shape2black,
+      shape2grey,
+      shape2white
     ],
     shape3: [
-      shape3red, shape3pink, shape3orange, shape3yellow, shape3beige, 
-      shape3skyblue, shape3lightblue, shape3green, shape3deepgreen, 
-      shape3purple, shape3blue, shape3deepblue,
-      shape3black, shape3grey, shape3white
+      shape3red,
+      shape3pink,
+      shape3orange,
+      shape3yellow,
+      shape3beige,
+      shape3skyblue,
+      shape3lightblue,
+      shape3green,
+      shape3deepgreen,
+      shape3purple,
+      shape3blue,
+      shape3deepblue,
+      shape3black,
+      shape3grey,
+      shape3white
     ],
     shape4: [
-      shape4red, shape4pink, shape4orange, shape4yellow, shape4beige, 
-      shape4skyblue, shape4lightblue, shape4green, shape4deepgreen, 
-      shape4purple, shape4blue, shape4deepblue,
-      shape4black, shape4grey, shape4white
+      shape4red,
+      shape4pink,
+      shape4orange,
+      shape4yellow,
+      shape4beige,
+      shape4skyblue,
+      shape4lightblue,
+      shape4green,
+      shape4deepgreen,
+      shape4purple,
+      shape4blue,
+      shape4deepblue,
+      shape4black,
+      shape4grey,
+      shape4white
     ],
     shape5: [
-      shape5red, shape5pink, shape5orange, shape5yellow, shape5beige, 
-      shape5skyblue, shape5lightblue, shape5green, shape5deepgreen, 
-      shape5purple, shape5blue, shape5deepblue,
-      shape5black, shape5grey, shape5white
+      shape5red,
+      shape5pink,
+      shape5orange,
+      shape5yellow,
+      shape5beige,
+      shape5skyblue,
+      shape5lightblue,
+      shape5green,
+      shape5deepgreen,
+      shape5purple,
+      shape5blue,
+      shape5deepblue,
+      shape5black,
+      shape5grey,
+      shape5white
     ],
     shape6: [
-      shape6red, shape6pink, shape6orange, shape6yellow, shape6beige, 
-      shape6skyblue, shape6lightblue, shape6green, shape6deepgreen, 
-      shape6purple, shape6blue, shape6deepblue,
-      shape6black, shape6grey, shape6white
-    ],
+      shape6red,
+      shape6pink,
+      shape6orange,
+      shape6yellow,
+      shape6beige,
+      shape6skyblue,
+      shape6lightblue,
+      shape6green,
+      shape6deepgreen,
+      shape6purple,
+      shape6blue,
+      shape6deepblue,
+      shape6black,
+      shape6grey,
+      shape6white
+    ]
   };
 
   const ornamentImages = {
@@ -203,19 +270,19 @@ export default function Deco() {
     orna5: ornament5,
     orna6: ornament6
   };
-  
-  const handleItemClick = (item) => {
+
+  const handleItemClick = item => {
     let newItem;
-  
-    if (selectedMenu === 'color') {
+
+    if (selectedMenu === "color") {
       // color 항목일 경우 item에는 colorList의 객체가 전달됩니다.
       newItem = item.name;
-    } else if (selectedMenu === 'shape' || selectedMenu === 'ornaments') {
+    } else if (selectedMenu === "shape" || selectedMenu === "ornaments") {
       // shape와 orna 항목일 경우 item에는 숫자가 전달됩니다.
       newItem = item;
     }
-  
-    setSelectedItems((prevSelectedItems) => ({
+
+    setSelectedItems(prevSelectedItems => ({
       ...prevSelectedItems,
       [selectedMenu]: newItem
     }));
@@ -223,39 +290,39 @@ export default function Deco() {
 
   const handleLetterBoxClick = () => {
     // LetterBox 클릭 시 StyleBox를 토글하여 보이기/숨기기
-    setIsStyleBoxVisible((prevIsVisible) => !prevIsVisible);
+    setIsStyleBoxVisible(prevIsVisible => !prevIsVisible);
   };
 
   console.log(selectedItems);
 
-  {/* 데이터 호출, 전송 부분 */}
-  
-  const [accessToken, ] = useAtom(accessTokenAtom);
+  {
+    /* 데이터 호출, 전송 부분 */
+  }
+
+  const [accessToken] = useAtom(accessTokenAtom);
   const [nickname] = useAtom(nicknameAtom);
   const router = useNavigate();
   useEffect(() => {
-    
     console.log("현재 닉네임:", nickname);
   }, [nickname]);
 
   const postUserData = async (selectedItems, nickname) => {
-    if(accessToken) {
+    if (accessToken) {
       try {
-        const response = await axios.post('postbox', {
+        const response = await axios.post("postbox", {
           ornaments: selectedItems.ornaments,
           color: selectedItems.color,
           shape: selectedItems.shape,
           nickName: nickname,
           headers: {
-            Authorization: `Bearer ${accessToken}`, // 헤더에 accessToken을 추가
-          },
+            Authorization: `Bearer ${accessToken}` // 헤더에 accessToken을 추가
+          }
         });
-    
-        console.log('API 응답:', response.data);
-        router('/completepostbox')
+
+        console.log("API 응답:", response.data);
+        router("/completepostbox");
       } catch (error) {
-        console.error('API 오류:', error);
-        
+        console.error("API 오류:", error);
       }
     }
   };
@@ -267,7 +334,11 @@ export default function Deco() {
           <p>취향을 담아 우체통을 꾸며주세요!</p>
         </S.Header>
         <S.LetterBox
-          src={shapeImages[selectedItems.shape][colorList.findIndex(color => color.name === selectedItems.color)]}
+          src={
+            shapeImages[selectedItems.shape][
+              colorList.findIndex(color => color.name === selectedItems.color)
+            ]
+          }
           alt="letterbox"
           onClick={handleLetterBoxClick}
         />
@@ -275,7 +346,7 @@ export default function Deco() {
           src={ornamentImages[selectedItems.ornaments]}
           alt="ornaments"
         />
-        {isStyleBoxVisible && ( 
+        {isStyleBoxVisible && (
           <S.StyleBox>
             <S.MenuWrapper>
               <S.MenuBtn onClick={() => setSelectedMenu("shape")}>
@@ -291,12 +362,12 @@ export default function Deco() {
               </S.MenuBtn>
             </S.MenuWrapper>
             <S.LineHorizontal />
-            {(selectedMenu === "shape") && (
+            {selectedMenu === "shape" && (
               <S.ShapeContainer>
                 {shapeList.map((shape, index) => (
                   <S.IconWrapper
                     key={index}
-                    isSelected={selectedItems.shape ===`shape${index + 1}`}
+                    isSelected={selectedItems.shape === `shape${index + 1}`}
                     onClick={() => handleItemClick(`shape${index + 1}`)}
                   >
                     <S.ShapeIcon src={shape} alt={`shape${index + 1}`} />
@@ -304,13 +375,17 @@ export default function Deco() {
                 ))}
               </S.ShapeContainer>
             )}
-            {(selectedMenu === "color") && (
+            {selectedMenu === "color" && (
               <S.ColorContainer>
                 {colorList.map((color, index) => (
                   <S.ColorBtn
                     key={index}
                     backgroundColor={color.value}
-                    border={selectedItems.color === color ? '3px solid #FF9466' : 'none'}
+                    border={
+                      selectedItems.color === color
+                        ? "3px solid #FF9466"
+                        : "none"
+                    }
                     isSelected={selectedItems.color === `color${index + 1}`}
                     onClick={() => handleItemClick(color)}
                   />
@@ -320,20 +395,20 @@ export default function Deco() {
                   backgroundColor="#FFF"
                   border={
                     selectedItems.color === "#FFF"
-                      ? '3px solid #FF9466'
-                      : '0.54px solid rgba(0, 0, 0, 0.33)'
+                      ? "3px solid #FF9466"
+                      : "0.54px solid rgba(0, 0, 0, 0.33)"
                   }
                   isSelected={selectedItems.color === `color15`}
                   onClick={() => handleItemClick("#FFF")}
                 />
               </S.ColorContainer>
             )}
-            {(selectedMenu === "ornaments") && (
+            {selectedMenu === "ornaments" && (
               <S.OrnaContainer>
                 {ornaList.map((orna, index) => (
                   <S.IconWrapper
                     key={index}
-                    isSelected={selectedItems.orna ===`orna${index + 1}`}
+                    isSelected={selectedItems.orna === `orna${index + 1}`}
                     onClick={() => handleItemClick(`orna${index + 1}`)}
                   >
                     <S.OrnaIcon src={orna} alt={`orna${index + 1}`} />
@@ -343,10 +418,13 @@ export default function Deco() {
             )}
           </S.StyleBox>
         )}
-        <S.Button $white="true" onClick={() => postUserData(selectedItems, nickname)}>
+        <S.Button
+          $white="true"
+          onClick={() => postUserData(selectedItems, nickname)}
+        >
           완성하기
         </S.Button>
       </S.Root>
     </>
-  )
+  );
 }
