@@ -101,6 +101,7 @@ export const IDCheck = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 `;
 
 export const Button = styled.button`

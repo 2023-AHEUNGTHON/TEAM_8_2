@@ -45,6 +45,7 @@ export const Header = styled.div`
 export const LogoImage = styled.img`
 	width: 55%;
   margin: 2px 0 -12px 0;
+  cursor: pointer;
 `;
 
 export const LetterBox = styled.div`

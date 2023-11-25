@@ -1,27 +1,11 @@
 import React, { useState, useEffect } from "react";
 import * as S from "./style";
 import Logo from "../../assets/logo-shadow.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import { useAtom } from "jotai";
 import { nicknameAtom } from "../../store/jotaiAtoms";
-import { accessTokenAtom } from "../../store/jotaiAtoms";
-
-import Lbox from "../../assets/img/letterbox-1.png";
-import menu1 from "../../assets/img/menu-shape.png";
-import menu2 from "../../assets/img/menu-color.png";
-import menu3 from "../../assets/img/menu-ornaments.png";
-import shape1 from "../../assets/img/pickShape-1.png";
-import shape2 from "../../assets/img/pickShape-2.png";
-import shape3 from "../../assets/img/pickShape-3.png";
-import shape4 from "../../assets/img/pickShape-4.png";
-import shape5 from "../../assets/img/pickShape-5.png";
-import shape6 from "../../assets/img/pickShape-6.png";
-import orna1 from "../../assets/img/pickOrna-1.png";
-import orna2 from "../../assets/img/pickOrna-2.png";
-import orna3 from "../../assets/img/pickOrna-3.png";
-import orna4 from "../../assets/img/pickOrna-4.png";
-import orna5 from "../../assets/img/pickOrna-5.png";
-import orna6 from "../../assets/img/pickOrna-6.png";
+import MindLetterBtnComponent from "../../components/common/MindLetterBtn";
+import CustomAlert from "../../components/common/CustomAlert";
 
 import ornament1 from "../../assets/decoLib/ornaments/ornament-1.png";
 import ornament2 from "../../assets/decoLib/ornaments/ornament-2.png";
@@ -126,17 +110,14 @@ import shape6skyblue from "../../assets/decoLib/shape6/sky-blue.png";
 import shape6white from "../../assets/decoLib/shape6/White.png";
 import shape6yellow from "../../assets/decoLib/shape6/yellow.png";
 
-export default function Deco() {
+export default function CompletePostBox() {
   const initialSelectedData ={
-    shape: 'shape1',
-    color: 'red',
-    ornaments: 'orna1'
+    shape: '',
+    color: '',
+    ornaments: ''
   }
-  const [selectedMenu, setSelectedMenu] = useState("shape"); // 스타일박스 메뉴 카테고리 선택
   const [selectedItems, setSelectedItems] = useState(initialSelectedData);  // 우체통 스타일 폼
-  const [isStyleBoxVisible, setIsStyleBoxVisible] = useState(false); // 스타일박스 로딩 유무
-  
-  const shapeList = [shape1, shape2, shape3, shape4, shape5, shape6];
+
   const colorList = [
     { name: 'red', value: '#E20000' },
     { name: 'pink', value: '#F88C81' },
@@ -154,7 +135,6 @@ export default function Deco() {
     { name: 'grey', value: '#7E7E7E' },
     { name: 'white', value: '#FFF'}
   ];
-  const ornaList = [orna1, orna2, orna3, orna4, orna5, orna6];
 
   const shapeImages = {
     shape1: [
@@ -203,149 +183,96 @@ export default function Deco() {
     orna5: ornament5,
     orna6: ornament6
   };
-  
-  const handleItemClick = (item) => {
-    let newItem;
-  
-    if (selectedMenu === 'color') {
-      // color 항목일 경우 item에는 colorList의 객체가 전달됩니다.
-      newItem = item.name;
-    } else if (selectedMenu === 'shape' || selectedMenu === 'ornaments') {
-      // shape와 orna 항목일 경우 item에는 숫자가 전달됩니다.
-      newItem = item;
-    }
-  
-    setSelectedItems((prevSelectedItems) => ({
-      ...prevSelectedItems,
-      [selectedMenu]: newItem
-    }));
-  };
-
-  const handleLetterBoxClick = () => {
-    // LetterBox 클릭 시 StyleBox를 토글하여 보이기/숨기기
-    setIsStyleBoxVisible((prevIsVisible) => !prevIsVisible);
-  };
-
-  console.log(selectedItems);
 
   {/* 데이터 호출, 전송 부분 */}
-  
-  const [accessToken, ] = useAtom(accessTokenAtom);
   const [nickname] = useAtom(nicknameAtom);
-  const router = useNavigate();
   useEffect(() => {
-    
-    console.log("현재 닉네임:", nickname);
-  }, [nickname]);
-
-  const postUserData = async (selectedItems, nickname) => {
-    if(accessToken) {
+    const fetchData = async () => {
       try {
-        const response = await axios.post('postbox', {
-          ornaments: selectedItems.ornaments,
-          color: selectedItems.color,
-          shape: selectedItems.shape,
-          nickName: nickname,
-          headers: {
-            Authorization: `Bearer ${accessToken}`, // 헤더에 accessToken을 추가
-          },
+        const response = await fetch('/postbox');
+        const userData = await response.json();
+  
+        setSelectedItems({
+          shape: userData.shape,
+          color: userData.color,
+          ornaments: userData.ornaments,
         });
-    
-        console.log('API 응답:', response.data);
-        router('/completepostbox')
+  
       } catch (error) {
-        console.error('API 오류:', error);
-        
+        console.error('Error fetching user data:', error);
       }
-    }
-  };
+    };
+  
+    fetchData();
+  }, []);
+
+  // 이미지 파일 경로 설정
+  const letterBoxImage = shapeImages[selectedItems.shape][colorList.findIndex(color => color.name === selectedItems.color)];
+  const ornamentsImage = ornamentImages[selectedItems.ornaments];
+  
+  const [showAlert, setShowAlert] = useState(false);
+  const navigate = useNavigate();
+  // location username=uuid 값을 가지고와서 변수에 저장
+  const location = useLocation();
+  const { username } = useParams();
+  const [userName, setUserName] = useState("");
+
+  // 나중에 query로 유저 정보 가져와서 저장
+  //   useEffect(() => {
+  //     first;
+
+  //     return () => {
+  //       second;
+  //     };
+  //   }, [third]);
+
+  const [post, setPost] = useState({
+    title: "",
+    content: "",
+    receiver: "",
+    sender: "",
+    letterImage: ""
+  });
 
   return (
     <>
       <S.Root>
-        <S.Header>
-          <p>취향을 담아 우체통을 꾸며주세요!</p>
-        </S.Header>
+        {showAlert && (
+          <CustomAlert
+            message="링크가 복사되었습니다!"
+            colorCode="#ffd84d"
+            onClose={() => {
+              setShowAlert(false);
+            }}
+          />
+        )}
+        <S.LogoImage src={Logo} alt="logo" />
+        <S.Header>{nickname}님의 우체통</S.Header>
         <S.LetterBox
-          src={shapeImages[selectedItems.shape][colorList.findIndex(color => color.name === selectedItems.color)]}
+          src={letterBoxImage}
           alt="letterbox"
-          onClick={handleLetterBoxClick}
         />
         <S.Ornaments
-          src={ornamentImages[selectedItems.ornaments]}
+          src={ornamentsImage}
           alt="ornaments"
         />
-        {isStyleBoxVisible && ( 
-          <S.StyleBox>
-            <S.MenuWrapper>
-              <S.MenuBtn onClick={() => setSelectedMenu("shape")}>
-                <img src={menu1} alt="menu1" />
-              </S.MenuBtn>
-              <S.LineVertical />
-              <S.MenuBtn onClick={() => setSelectedMenu("color")}>
-                <img src={menu2} alt="menu2" />
-              </S.MenuBtn>
-              <S.LineVertical />
-              <S.MenuBtn onClick={() => setSelectedMenu("ornaments")}>
-                <img src={menu3} alt="menu3" />
-              </S.MenuBtn>
-            </S.MenuWrapper>
-            <S.LineHorizontal />
-            {(selectedMenu === "shape") && (
-              <S.ShapeContainer>
-                {shapeList.map((shape, index) => (
-                  <S.IconWrapper
-                    key={index}
-                    isSelected={selectedItems.shape ===`shape${index + 1}`}
-                    onClick={() => handleItemClick(`shape${index + 1}`)}
-                  >
-                    <S.ShapeIcon src={shape} alt={`shape${index + 1}`} />
-                  </S.IconWrapper>
-                ))}
-              </S.ShapeContainer>
-            )}
-            {(selectedMenu === "color") && (
-              <S.ColorContainer>
-                {colorList.map((color, index) => (
-                  <S.ColorBtn
-                    key={index}
-                    backgroundColor={color.value}
-                    border={selectedItems.color === color ? '3px solid #FF9466' : 'none'}
-                    isSelected={selectedItems.color === `color${index + 1}`}
-                    onClick={() => handleItemClick(color)}
-                  />
-                ))}
-                <S.ColorBtn
-                  key={15}
-                  backgroundColor="#FFF"
-                  border={
-                    selectedItems.color === "#FFF"
-                      ? '3px solid #FF9466'
-                      : '0.54px solid rgba(0, 0, 0, 0.33)'
-                  }
-                  isSelected={selectedItems.color === `color15`}
-                  onClick={() => handleItemClick("#FFF")}
-                />
-              </S.ColorContainer>
-            )}
-            {(selectedMenu === "ornaments") && (
-              <S.OrnaContainer>
-                {ornaList.map((orna, index) => (
-                  <S.IconWrapper
-                    key={index}
-                    isSelected={selectedItems.orna ===`orna${index + 1}`}
-                    onClick={() => handleItemClick(`orna${index + 1}`)}
-                  >
-                    <S.OrnaIcon src={orna} alt={`orna${index + 1}`} />
-                  </S.IconWrapper>
-                ))}
-              </S.OrnaContainer>
-            )}
-          </S.StyleBox>
-        )}
-        <S.Button $white="true" onClick={() => postUserData(selectedItems, nickname)}>
-          완성하기
-        </S.Button>
+        <S.ButtonWrapper>
+          <MindLetterBtnComponent
+            colorCode={"#ffd84d"}
+            action={() => {
+              navigate("/mypostbox/detail");
+            }}
+            text={"받은 편지 보러가기"}
+          ></MindLetterBtnComponent>
+          <MindLetterBtnComponent
+            colorCode={"#FFFCF5"}
+            action={() => {
+              navigator.clipboard.writeText(window.location.href);
+              setShowAlert(true);
+            }}
+            text={"내 우체통 공유하기"}
+          ></MindLetterBtnComponent>
+        </S.ButtonWrapper>
       </S.Root>
     </>
   )

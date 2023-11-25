@@ -30,7 +30,7 @@ export default function Login() {
   };
 
   const login = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     
     // 이메일 또는 패스워드가 비어있을 경우 로그인 막음
     if (!email || !password) {

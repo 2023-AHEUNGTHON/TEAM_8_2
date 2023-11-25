@@ -1,15 +1,19 @@
 import React from "react";
 import * as S from "./style";
-import Logo from "../../assets/logo-shadow.png";
 import { Link, useNavigate } from "react-router-dom";
+import { useAtom } from "jotai";
+import { accessTokenAtom } from "../../store/jotaiAtoms";
 
 export default function Nickname() {
   const router = useNavigate();
+  const [nickname, setNickname] = useAtom(nicknameAtom);
+
   const handleInput = (event) => {
-    setEmail(event.target.value);
+    setNickname(event.target.value);
   };
 
   const startDeco = () => {
+    updateNickname(nickname);
     router("/deco");
   };
 
@@ -32,12 +36,12 @@ export default function Nickname() {
       </S.Header>
       <S.LetterBox>
         <S.ButtonWrapper>
-        <S.Button onClick={(e) => startDeco(e)}>
+        <S.Button onClick={startDeco}>
           내 우체통 꾸미기
         </S.Button>
-        <S.Button $white="true">
+        {/* <S.Button $white="true">
           완성하기
-        </S.Button>
+        </S.Button> */}
       </S.ButtonWrapper>
     </S.LetterBox>
     </S.Root>
