@@ -9,5 +9,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   </React.StrictMode>
 );
 
-axios.defaults.baseURL = "http://ec2-13-209-10-74.ap-northeast-2.compute.amazonaws.com:8080";
+axios.defaults.baseURL = "http://ec2-54-180-133-112.ap-northeast-2.compute.amazonaws.com:8080";
 axios.defaults.withCredentials = true;

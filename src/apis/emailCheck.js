@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../apis/axios";
 
 export const emailCheck = (formData, setFormData, setIsEmailAvailable) => {
   
